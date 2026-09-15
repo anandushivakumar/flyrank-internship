@@ -17,14 +17,17 @@ class TaskCreate(BaseModel):
 
 @app.get("/tasks")
 def get_tasks():
+    """Return every task in the list."""
     return tasks
 
 @app.get("/")
 def root():
+    """Return API metadata and available endpoints."""
     return {"name": "Task API", "version": "1.0", "endpoints": ["/tasks"]}
 
 @app.get("/tasks/{task_id}")
 def get_task(task_id: int):
+    """Return a single task by its ID."""
     for task in tasks:
         if task["id"] == task_id:
             return task
@@ -33,6 +36,7 @@ def get_task(task_id: int):
 
 @app.post("/tasks", status_code=201)
 def create_task(new_task: TaskCreate):
+    """Create a new task with the provided title."""
     global next_id
     if not new_task.title or not new_task.title.strip():
         raise HTTPException(status_code=400, detail="Title is required")
@@ -44,6 +48,7 @@ def create_task(new_task: TaskCreate):
 
 @app.get("/health")
 def health():
+    """Check the health status of the API."""
     return {"status": "ok"}
 
 class TaskUpdate(BaseModel):
@@ -52,6 +57,7 @@ class TaskUpdate(BaseModel):
 
 @app.put("/tasks/{task_id}")
 def update_task(task_id: int, updates: TaskUpdate):
+    """Update an existing task's title or completion status by ID."""
     for task in tasks:
         if task["id"] == task_id:
             if updates.title is not None:
@@ -65,6 +71,7 @@ def update_task(task_id: int, updates: TaskUpdate):
 
 @app.delete("/tasks/{task_id}", status_code=204)
 def delete_task(task_id: int):
+    """Delete a task by its ID."""
     for task in tasks:
         if task["id"] == task_id:
             tasks.remove(task)
