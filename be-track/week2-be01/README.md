@@ -37,4 +37,4 @@ content-type: application/json
 
 ## Swagger UI
 
-[paste your screenshot here]
+![output of SWAGGER UI](image.png)
